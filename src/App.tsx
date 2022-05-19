@@ -94,7 +94,7 @@ export const App = () => {
   //console.log(useColorModeValue("LIGHT", "DARK"));
 
   return (
-    <VStack spacing={4} align="stretch" fontSize="xl" px={8} py={3} mt={5}>
+    <VStack spacing={4} align="stretch" fontSize="xl" px={8} py={3} my={5}>
       <HStack justify="space-between">
         <VStack align="stretch">
           <Heading>Tell me to do something or ask me a question</Heading>

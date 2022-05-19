@@ -36,12 +36,7 @@ export default function LastPrompt({
   //console.log(data, prompt, lastFullPrompt, loading);
   return (
     <Center>
-      <VStack
-        w={!isMobile ? "100%" : "50%"}
-        textAlign="center"
-        spacing={0}
-        align="stretch"
-      >
+      <VStack textAlign="center" spacing={0} align="stretch">
         <HStack justify="space-between">
           <Heading my={4} size="lg">
             Last Prompt

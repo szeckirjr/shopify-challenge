@@ -40,6 +40,8 @@ export default function ChangeAIEngine({
   return (
     <>
       <HStack>
+        {/* @ts-ignore */}
+        <Heading>Using {translateEngine[engine]}</Heading>
         <Button
           onClick={onOpen}
           w={isMobile ? "90%" : "30%"}
@@ -47,8 +49,6 @@ export default function ChangeAIEngine({
         >
           Switch Engine AI
         </Button>
-        {/* @ts-ignore */}
-        <Heading>{translateEngine[engine]}</Heading>
       </HStack>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
