@@ -29,9 +29,7 @@ export default function LastPrompt({
   const [lastFullPrompt, setLastFullPrompt] = React.useState("");
 
   useEffect(() => {
-    console.log("OH WHAT", prompt, lastFullPrompt);
     if (prompt && prompt.trim() !== "" && prompt !== lastFullPrompt) {
-      console.log("UPDATING", prompt, lastFullPrompt);
       setLastFullPrompt(prompt as string);
     }
   }, [prompt, lastFullPrompt]);
