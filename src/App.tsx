@@ -1,30 +1,25 @@
 import * as React from "react";
 import {
-  ChakraProvider,
-  Box,
-  theme,
   Heading,
   Button,
   VStack,
-  Spinner,
-  Select,
   Flex,
   HStack,
-  Center,
-  Text,
-  useMediaQuery,
-  useColorMode,
-  color,
-  useColorModeValue,
+  IconButton,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Textarea } from "@chakra-ui/react";
 import Prompt from "./Prompt";
 import LastPrompt from "./LastPrompt";
-const { Configuration, OpenAIApi } = require("openai");
-const configuration = new Configuration({
-  apiKey: "",
-});
+import {
+  IoIosArrowDropupCircle,
+  IoIosArrowDropdownCircle,
+} from "react-icons/io";
+import SamplePrompts from "./SamplePrompts";
+import ChangeAIEngine from "./ChangeAIEngine";
+
+import { Configuration, OpenAIApi } from "openai";
+const configuration = new Configuration({});
 const openai = new OpenAIApi(configuration);
 
 async function handleApi(
@@ -34,6 +29,7 @@ async function handleApi(
   engine: string
 ) {
   if (prompt.trim() === "") return;
+  console.log("Trying for", prompt, "with", engine);
   setLoading(true);
   const tempPrompt = prompt;
   setPrompt("");
@@ -57,8 +53,7 @@ export type PastPrompt = {
 
 export const App = () => {
   const [prompt, setPrompt] = React.useState("");
-  const [isMobile] = useMediaQuery("(min-width: 1280px)");
-  const { colorMode } = useColorMode();
+  const [showPast, setShowPast] = React.useState(false);
   //const [text, setText] = React.useState(prompt);
 
   const [data, setData] = React.useState<PastPrompt[]>(
@@ -95,72 +90,83 @@ export const App = () => {
     );
   };
 
-  console.log(colorMode);
+  //console.log(data, prompt);
+  //console.log(useColorModeValue("LIGHT", "DARK"));
 
   return (
-    <ChakraProvider theme={theme}>
-      <VStack spacing={4} align="stretch" fontSize="xl" px={8} py={3} mt={5}>
-        <HStack justify="space-between">
+    <VStack spacing={4} align="stretch" fontSize="xl" px={8} py={3} mt={5}>
+      <HStack justify="space-between">
+        <VStack align="stretch">
           <Heading>Tell me to do something or ask me a question</Heading>
-          <ColorModeSwitcher />
-        </HStack>
+          <Heading size="md">The more details the better...</Heading>
+        </VStack>
+        <ColorModeSwitcher />
+      </HStack>
 
-        <Select
-          w={!isMobile ? "80%" : "30%"}
-          defaultValue="text-ada-001"
-          onChange={(e) => setEngine(e.target.value)}
-          variant="filled"
-        >
-          <option value="text-davinci-002">
-            Davinci - Best answers, highest cost
-          </option>
-          <option value="text-curie-001">
-            Curie - Capable, faster and lower cost
-          </option>
-          <option value="text-babbage-001">
-            Babbage - Capable, very fast and lower cost
-          </option>
-          <option value="text-ada-001">
-            Ada - Simple tasks, fastest and lowest cost
-          </option>
-        </Select>
-        <Textarea
-          onChange={(e) => setPrompt(e.target.value)}
-          size="lg"
-          variant="unstyled"
-          resize="vertical"
-          placeholder="Enter a prompt"
-          value={prompt}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              if (prompt.trim() === "" || engine.trim() === "") return;
-              handleApi(prompt, setPrompt, setLoading, engine).then(
-                (r) =>
-                  r.status === 200 &&
-                  storeNewPrompt(prompt, r.data.choices[0].text)
-              );
-            }
-          }}
-        />
-        <Button
-          onClick={() => {
+      <ChangeAIEngine engine={engine} setEngine={setEngine} />
+
+      <Textarea
+        onChange={(e) => setPrompt(e.target.value)}
+        size="lg"
+        variant="flushed"
+        resize="vertical"
+        placeholder="Enter a prompt"
+        value={prompt}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
             if (prompt.trim() === "" || engine.trim() === "") return;
-            handleApi(prompt, setPrompt, setLoading, engine).then(
+            handleApi(prompt, setPrompt, setLoading, engine)
+              .then(
+                (r) =>
+                  r!.status === 200 &&
+                  storeNewPrompt(prompt, r!.data.choices![0].text!)
+              )
+              .catch((err) => {
+                console.log("Error", err);
+              });
+          }
+        }}
+      />
+      <SamplePrompts setPrompt={setPrompt} />
+      <Button
+        onClick={() => {
+          if (prompt.trim() === "" || engine.trim() === "") return;
+          handleApi(prompt, setPrompt, setLoading, engine)
+            .then(
               (r) =>
-                r.status === 200 &&
-                storeNewPrompt(prompt, r.data.choices[0].text)
-            );
-          }}
-        >
-          Done
-        </Button>
-        {data && data[0] && <LastPrompt isMobile data={data} />}
-        {loading ? <Spinner /> : null}
-        {data && data.length > 1 && (
-          <VStack justify="left" align="stretch">
+                r!.status === 200 &&
+                storeNewPrompt(prompt, r!.data.choices![0].text!)
+            )
+            .catch((err) => {
+              console.log("Error", err);
+            });
+        }}
+      >
+        Done
+      </Button>
+      {data && data[0] && (
+        <LastPrompt isMobile data={data} prompt={prompt} loading={loading} />
+      )}
+      {data && data.length > 1 && (
+        <VStack justify="left" align="stretch">
+          <HStack mt={8}>
             <Heading>Past prompts</Heading>
-
+            <IconButton
+              variant="ghost"
+              onClick={() => setShowPast(!showPast)}
+              borderRadius="full"
+              aria-label={showPast ? "Close Past Prompts" : "Open Past Prompts"}
+              icon={
+                showPast ? (
+                  <IoIosArrowDropupCircle size={25} />
+                ) : (
+                  <IoIosArrowDropdownCircle size={25} />
+                )
+              }
+            />
+          </HStack>
+          {showPast && (
             <Flex dir="row" wrap="wrap">
               {data.map(
                 (value, index) =>
@@ -176,9 +182,9 @@ export const App = () => {
                   )
               )}
             </Flex>
-          </VStack>
-        )}
-      </VStack>
-    </ChakraProvider>
+          )}
+        </VStack>
+      )}
+    </VStack>
   );
 };

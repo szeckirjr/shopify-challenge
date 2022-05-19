@@ -1,23 +1,22 @@
 import {
   Box,
   Button,
-  Divider,
   Heading,
-  HStack,
   IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   ModalOverlay,
   Text,
+  useColorModeValue,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
 import { TiDelete } from "react-icons/ti";
+import { IoIosArrowDroprightCircle } from "react-icons/io";
 
 export default function Prompt({
   prompt,
@@ -40,7 +39,8 @@ export default function Prompt({
       <Box
         onClick={onOpen}
         position="relative"
-        borderColor="#808080"
+        borderColor={useColorModeValue("#171717", "#C0C0C0")}
+        backgroundColor={useColorModeValue("gray.100", "gray.600")}
         borderWidth={2}
         p={4}
         m={2}
@@ -49,14 +49,15 @@ export default function Prompt({
         h="200px"
         cursor="pointer"
         overflowY="hidden"
+        flexGrow={1}
       >
         <IconButton
           position="absolute"
           right={2}
           bottom={2}
           aria-label={"Delete prompt"}
-          icon={<TiDelete size={25} />}
-          onClick={() => removePrompt(prompt, response)}
+          icon={<IoIosArrowDroprightCircle size={25} />}
+          onClick={onOpen}
         />
         <Text fontSize={18} fontWeight="bold">
           {prompt.length > 80 ? prompt.slice(0, 80) + "..." : prompt}
@@ -85,7 +86,7 @@ export default function Prompt({
               <Text
                 borderRadius="lg"
                 p={3}
-                backgroundColor="gray.100"
+                backgroundColor={useColorModeValue("gray.100", "gray.800")}
                 size="lg"
                 fontWeight="500"
               >
@@ -97,7 +98,7 @@ export default function Prompt({
               <Text
                 borderRadius="lg"
                 p={3}
-                backgroundColor="gray.100"
+                backgroundColor={useColorModeValue("gray.100", "gray.800")}
                 size="lg"
                 fontWeight="500"
               >
