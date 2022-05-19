@@ -145,7 +145,7 @@ export const App = () => {
       >
         Done
       </Button>
-      {data && data[0] && (
+      {(loading || (data && data[0])) && (
         <LastPrompt
           isMobile
           data={data}
