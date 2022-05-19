@@ -102,7 +102,11 @@ export default function Prompt({
                 size="lg"
                 fontWeight="500"
               >
-                {response}
+                <VStack align="stretch">
+                  {response
+                    .split(/\n|\r/g)
+                    .map((el) => el.trim() !== "" && <Text>{el}</Text>)}
+                </VStack>
               </Text>
             </VStack>
           </ModalBody>

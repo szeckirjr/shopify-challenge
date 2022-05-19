@@ -63,7 +63,12 @@ export default function LastPrompt({
             fontWeight="500"
             size="lg"
           >
-            {data[0].response}
+            <VStack align="stretch">
+              {data[0].response
+                .split(/\n|\r/g)
+                .map((el) => el.trim() !== "" && <Text>{el}</Text>)}
+            </VStack>
+            {/* {data[0].response.replace(/\n|\r/g, "<br/>")} */}
           </Text>
         )}
       </VStack>
