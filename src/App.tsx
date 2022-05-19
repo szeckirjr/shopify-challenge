@@ -19,7 +19,9 @@ import SamplePrompts from "./SamplePrompts";
 import ChangeAIEngine from "./ChangeAIEngine";
 
 import { Configuration, OpenAIApi } from "openai";
-const configuration = new Configuration({});
+const configuration = new Configuration({
+  apiKey: "",
+});
 const openai = new OpenAIApi(configuration);
 
 async function handleApi(
@@ -146,7 +148,13 @@ export const App = () => {
         Done
       </Button>
       {data && data[0] && (
-        <LastPrompt isMobile data={data} prompt={prompt} loading={loading} />
+        <LastPrompt
+          isMobile
+          data={data}
+          prompt={prompt}
+          loading={loading}
+          removePrompt={removePrompt}
+        />
       )}
       {data && data.length > 1 && (
         <VStack justify="left" align="stretch">

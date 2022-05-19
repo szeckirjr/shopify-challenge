@@ -5,9 +5,12 @@ import {
   VStack,
   Text,
   Spinner,
+  IconButton,
+  HStack,
 } from "@chakra-ui/react";
 import React from "react";
 import { useEffect } from "react";
+import { TiDelete } from "react-icons/ti";
 import { PastPrompt } from "./App";
 
 export default function LastPrompt({
@@ -15,11 +18,13 @@ export default function LastPrompt({
   data,
   prompt,
   loading,
+  removePrompt,
 }: {
   isMobile: boolean;
   data: PastPrompt[];
   prompt?: String;
   loading?: boolean;
+  removePrompt: (prompt: String, response: String) => void;
 }): JSX.Element {
   const [lastFullPrompt, setLastFullPrompt] = React.useState("");
 
@@ -34,14 +39,23 @@ export default function LastPrompt({
   return (
     <Center>
       <VStack
-        w={!isMobile ? "80%" : "50%"}
+        w={!isMobile ? "100%" : "50%"}
         textAlign="center"
         spacing={0}
         align="stretch"
       >
-        <Heading my={4} size="lg">
-          Last Prompt
-        </Heading>
+        <HStack justify="space-between">
+          <Heading my={4} size="lg">
+            Last Prompt
+          </Heading>
+          <IconButton
+            isDisabled={loading}
+            onClick={() => removePrompt(data[0].prompt, data[0].response)}
+            aria-label="Delete prompt"
+            icon={<TiDelete size={24} />}
+          />
+        </HStack>
+
         <Heading
           p={4}
           borderTopRadius="lg"
