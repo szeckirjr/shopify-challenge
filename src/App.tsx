@@ -31,7 +31,14 @@ async function handleApi(
   engine: string
 ) {
   if (prompt.trim() === "") return;
-  console.log("Trying for", prompt, "with", engine);
+  console.log(
+    "Trying for",
+    prompt,
+    "with",
+    engine,
+    "and",
+    process.env.OPENAI_APIKEY
+  );
   setLoading(true);
   const tempPrompt = prompt;
   setPrompt("");
