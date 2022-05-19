@@ -20,7 +20,7 @@ import ChangeAIEngine from "./ChangeAIEngine";
 
 import { Configuration, OpenAIApi } from "openai";
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_APIKEY,
+  apiKey: process.env.REACT_APP_OPENAI_APIKEY,
 });
 const openai = new OpenAIApi(configuration);
 
