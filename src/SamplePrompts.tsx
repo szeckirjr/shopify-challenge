@@ -46,28 +46,6 @@ export default function SamplePrompts({
                   borderRadius="lg"
                   backgroundColor={useColorModeValue("gray.100", "gray.600")}
                 >
-                  Tell me a story about a boy named Eduardo who was very
-                  interested in working at Shopify.
-                </Text>
-                <IconButton
-                  onClick={() => {
-                    setPrompt(
-                      "Tell me a story about a boy named Eduardo who was very interested in working at Shopify."
-                    );
-                    onClose();
-                  }}
-                  mr={3}
-                  aria-label="Select prompt to use"
-                  icon={<AiOutlineSelect size={20} />}
-                />
-              </HStack>
-              <HStack w="100%" justify="space-between">
-                <Text
-                  p={4}
-                  flexGrow={2}
-                  borderRadius="lg"
-                  backgroundColor={useColorModeValue("gray.100", "gray.600")}
-                >
                   Name 10 of the best movies of all time
                 </Text>
                 <IconButton
