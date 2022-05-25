@@ -7,43 +7,17 @@ import {
   HStack,
   IconButton,
 } from "@chakra-ui/react";
-import { ColorModeSwitcher } from "./ColorModeSwitcher";
+import { ColorModeSwitcher } from "./components/ColorModeSwitcher";
 import { Textarea } from "@chakra-ui/react";
-import Prompt from "./Prompt";
-import LastPrompt from "./LastPrompt";
+import Prompt from "./components/Prompt";
+import LastPrompt from "./components/LastPrompt";
 import {
   IoIosArrowDropupCircle,
   IoIosArrowDropdownCircle,
 } from "react-icons/io";
 import SamplePrompts from "./SamplePrompts";
-import ChangeAIEngine from "./ChangeAIEngine";
-
-import { Configuration, OpenAIApi } from "openai";
-const configuration = new Configuration({
-  apiKey: process.env.REACT_APP_OPENAI_APIKEY,
-});
-const openai = new OpenAIApi(configuration);
-
-async function handleApi(
-  prompt: string,
-  setPrompt: (val: string) => void,
-  setLoading: (val: boolean) => void,
-  engine: string
-) {
-  if (prompt.trim() === "") return;
-  setLoading(true);
-  const tempPrompt = prompt;
-  setPrompt("");
-  const response = await openai.createCompletion(engine, {
-    prompt: tempPrompt,
-    temperature: 0,
-    max_tokens: 256,
-    best_of: 3,
-  });
-
-  setLoading(false);
-  return response;
-}
+import ChangeAIEngine from "./components/ChangeAIEngine";
+import { handleApi } from "./api";
 
 export type PastPrompt = {
   prompt: string;
@@ -147,7 +121,6 @@ export const App = () => {
       </Button>
       {(loading || (data && data[0])) && (
         <LastPrompt
-          isMobile
           data={data}
           prompt={prompt}
           loading={loading}

@@ -11,16 +11,14 @@ import {
 import React from "react";
 import { useEffect } from "react";
 import { TiDelete } from "react-icons/ti";
-import { PastPrompt } from "./App";
+import { PastPrompt } from "./../App";
 
 export default function LastPrompt({
-  isMobile,
   data,
   prompt,
   loading,
   removePrompt,
 }: {
-  isMobile: boolean;
   data: PastPrompt[];
   prompt?: String;
   loading?: boolean;
