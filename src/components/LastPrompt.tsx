@@ -62,6 +62,7 @@ export default function LastPrompt({
           </Center>
         ) : (
           <Text
+            as="div"
             p={4}
             borderBottomRadius="lg"
             // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -72,7 +73,9 @@ export default function LastPrompt({
             <VStack align="stretch">
               {data[0].response
                 .split(/\n|\r/g)
-                .map((el) => el.trim() !== "" && <Text>{el}</Text>)}
+                .map(
+                  (el, idx) => el.trim() !== "" && <Text key={idx}>{el}</Text>
+                )}
             </VStack>
           </Text>
         )}
