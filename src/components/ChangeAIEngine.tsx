@@ -1,33 +1,31 @@
 import {
-  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
   useDisclosure,
-  useMediaQuery,
   VStack,
   HStack,
   Box,
   ModalHeader,
   Heading,
-  useColorModeValue,
   Text,
+  IconButton,
 } from "@chakra-ui/react";
 import { HiSwitchHorizontal, HiCheckCircle } from "react-icons/hi";
 import { MdAttachMoney } from "react-icons/md";
 import { AiFillStar } from "react-icons/ai";
 import { FaStopwatch } from "react-icons/fa";
+import { Engine } from "../lib/types";
 
 export default function ChangeAIEngine({
   setEngine,
   engine,
 }: {
-  setEngine: (value: string) => void;
-  engine: string;
+  setEngine: (value: Engine) => void;
+  engine: Engine;
 }): JSX.Element {
-  const [isMobile] = useMediaQuery("(max-width: 1280px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const translateEngine = {
@@ -37,18 +35,40 @@ export default function ChangeAIEngine({
     "text-ada-001": "Ada",
   };
 
+  const colorEngine = {
+    "text-davinci-002": "red.400", //useColorModeValue("#FCD1C1", "#d19680"),
+    "text-curie-001": "green.400", // useColorModeValue("#FCE8E1", "#bd9d91"),
+    "text-babbage-001": "blue.400", // useColorModeValue("#C6DFF7", "#81a5c7"),
+    "text-ada-001": "yellow.400", // useColorModeValue("#EFF8FF", "#abc2d4"),
+  };
+
   return (
     <>
       <HStack>
-        {/* @ts-ignore */}
-        <Heading>Using {translateEngine[engine]}</Heading>
-        <Button
-          onClick={onOpen}
-          w={isMobile ? "90%" : "30%"}
-          leftIcon={<HiSwitchHorizontal />}
-        >
-          Switch Engine AI
-        </Button>
+        <Heading onClick={onOpen}>
+          Using{" "}
+          <Heading
+            as="span"
+            color={colorEngine[engine]}
+            cursor="pointer"
+            onMouseEnter={(e) => {
+              (e.target as HTMLElement).style.opacity = "0.75";
+            }}
+            onMouseLeave={(e) => {
+              (e.target as HTMLElement).style.opacity = "1";
+            }}
+          >
+            {translateEngine[engine]}
+            <IconButton
+              colorScheme={""}
+              fontSize={25}
+              backgroundColor="transparent"
+              aria-label={"Switch AI engine"}
+              icon={<HiSwitchHorizontal />}
+              color={colorEngine[engine]}
+            />
+          </Heading>
+        </Heading>
       </HStack>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -69,7 +89,7 @@ export default function ChangeAIEngine({
                   cursor="pointer"
                   borderRadius="lg"
                   flexGrow={1}
-                  bg={useColorModeValue("#FCD1C1", "#d19680")}
+                  bg={colorEngine["text-davinci-002"]}
                   w="50%"
                   p={3}
                 >
@@ -111,7 +131,7 @@ export default function ChangeAIEngine({
                   cursor="pointer"
                   borderRadius="lg"
                   flexGrow={1}
-                  bg={useColorModeValue("#FCE8E1", "#bd9d91")}
+                  bg={colorEngine["text-curie-001"]}
                   w="50%"
                   p={3}
                 >
@@ -151,7 +171,7 @@ export default function ChangeAIEngine({
                   cursor="pointer"
                   borderRadius="lg"
                   flexGrow={1}
-                  bg={useColorModeValue("#C6DFF7", "#81a5c7")}
+                  bg={colorEngine["text-babbage-001"]}
                   w="50%"
                   p={3}
                 >
@@ -189,7 +209,7 @@ export default function ChangeAIEngine({
                   cursor="pointer"
                   borderRadius="lg"
                   flexGrow={1}
-                  bg={useColorModeValue("#EFF8FF", "#abc2d4")}
+                  bg={colorEngine["text-ada-001"]}
                   w="50%"
                   p={3}
                 >
@@ -218,24 +238,5 @@ export default function ChangeAIEngine({
         </ModalContent>
       </Modal>
     </>
-    // <Select
-    //   w={!isMobile ? "90%" : "30%"}
-    //   defaultValue="text-ada-001"
-    //   onChange={(e) => setEngine(e.target.value)}
-    //   variant="filled"
-    // >
-    //   <option value="text-davinci-002">
-    //     Davinci - Best answers, highest cost
-    //   </option>
-    //   <option value="text-curie-001">
-    //     Curie - Capable, faster and lower cost
-    //   </option>
-    //   <option value="text-babbage-001">
-    //     Babbage - Capable, very fast and lower cost
-    //   </option>
-    //   <option value="text-ada-001">
-    //     Ada - Simple tasks, fastest and lowest cost
-    //   </option>
-    // </Select>
   );
 }

@@ -11,6 +11,7 @@ import SamplePrompts from "./SamplePrompts";
 import ChangeAIEngine from "./components/ChangeAIEngine";
 import { TitleHeader } from "./components/TitleHeader";
 import { PromptInput } from "./components/PromptInput";
+import { Engine } from "./lib/types";
 
 export type PastPrompt = {
   prompt: string;
@@ -31,7 +32,7 @@ export const App = () => {
 
   const [loading, setLoading] = React.useState(false);
 
-  const [engine, setEngine] = React.useState("text-ada-001");
+  const [engine, setEngine] = React.useState<Engine>("text-ada-001");
 
   const removePrompt = (prompt: String, response: String) => {
     setData(
