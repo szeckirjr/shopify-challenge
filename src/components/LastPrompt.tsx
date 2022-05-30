@@ -25,6 +25,7 @@ export default function LastPrompt({
   removePrompt: (prompt: String, response: String) => void;
 }): JSX.Element {
   const [lastFullPrompt, setLastFullPrompt] = React.useState("");
+  const bg = useColorModeValue("gray.100", "gray.600");
 
   useEffect(() => {
     if (prompt && prompt.trim() !== "" && prompt !== lastFullPrompt) {
@@ -56,7 +57,7 @@ export default function LastPrompt({
           {loading ? lastFullPrompt : data[0].prompt}
         </Heading>
         {loading ? (
-          <Center>
+          <Center p={4} borderBottomRadius="lg" backgroundColor={bg}>
             <Spinner />
           </Center>
         ) : (
@@ -64,7 +65,7 @@ export default function LastPrompt({
             p={4}
             borderBottomRadius="lg"
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            backgroundColor={useColorModeValue("gray.100", "gray.600")}
+            backgroundColor={bg}
             fontWeight="500"
             size="lg"
           >
@@ -73,7 +74,6 @@ export default function LastPrompt({
                 .split(/\n|\r/g)
                 .map((el) => el.trim() !== "" && <Text>{el}</Text>)}
             </VStack>
-            {/* {data[0].response.replace(/\n|\r/g, "<br/>")} */}
           </Text>
         )}
       </VStack>
